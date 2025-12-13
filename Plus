@@ -144,9 +144,10 @@ echo -e "\033[1;33mDescargando archivos de Python para monitorización de usuari
 
 # Descarga el menú de Python (checkus.py) y lo guarda en /root/
 wget -O /root/checkus.py https://raw.githubusercontent.com/omar-campos/SSHPLUS/main/Modulos/checkus.py > /dev/null 2>&1
-
+wget -O /root/checkuser.py https://raw.githubusercontent.com/omar-campos/SSHPLUS/main/Modulos/checkuser.py > /dev/null 2>&1
 # Concede permisos de ejecución a ambos scripts
 chmod +x /root/checkus.py
+chmod +x /root/checkuser.py
 
 echo -e "\033[1;32mArchivos de CheckUser instalados en /root/.\033[0m"
 # =================================================================
