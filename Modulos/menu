@@ -162,14 +162,6 @@ function onapp_ssh () {
 [[ $(ps x | grep "onlineapp"|grep -v grep |wc -l) = '0' ]] && onapp1 || onapp2
 }
 ##
-function initcheck () {
-   # Ejecuta el script de Python que muestra el menú de CheckUser.
-   # Asegúrese de que '/root/checkus.py' sea la ruta correcta de instalación.
-   python3 /root/checkus.py
-   
-   # Pausa para que el usuario presione ENTER antes de volver al menú de SSHPlus.
-   echo -ne "\n\033[1;31mENTER \033[1;33mpara retornar ao \033[1;32mMENU!\033[0m"; read
-}
 
 function autoexec () {
    if grep "menu;" /etc/profile > /dev/null; then
