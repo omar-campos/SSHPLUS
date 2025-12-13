@@ -483,9 +483,9 @@ else
             }
             clear
             #local usuario="$1"
-            local archivo="checkuser.txt"
+            archivo="checkuser.txt"
             #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-            local linea="${username}:${ExpirationCheck}"
+            linea="${username}:${ExpirationCheck}"
 
             # Crear o agregar
             if [[ -f "$archivo" ]]; then
@@ -534,9 +534,9 @@ else
         } || {
             clear
             #local usuario="$1"
-            local archivo="checkuser.txt"
+            archivo="checkuser.txt"
             #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-            local linea="${username}:${ExpirationCheck}"
+            linea="${username}:${ExpirationCheck}"
 
             # Crear o agregar
             if [[ -f "$archivo" ]]; then
@@ -554,9 +554,9 @@ else
     } || {
         clear
         #local usuario="$1"
-        local archivo="checkuser.txt"
+        archivo="checkuser.txt"
         #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-        local linea="${username}:${ExpirationCheck}"
+        linea="${username}:${ExpirationCheck}"
 
         # Crear o agregar
         if [[ -f "$archivo" ]]; then
