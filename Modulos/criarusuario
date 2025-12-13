@@ -311,23 +311,11 @@ fun_usertoken() {
     password=$(cat /etc/SSHPlus/Token.txt)
     final=$(date "+%Y-%m-%d" -d "+$dias days")
     gui=$(date "+%d/%m/%Y" -d "+$dias days")
-    ExpirationCheck=$(date "+%d-%m-%Y" -d "+$dias days")
     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
     useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &
     echo "$password" >/etc/SSHPlus/senha/$username
     echo "$username $sshlimiter" >>/root/usuarios.db
     clear
-    #local usuario="$1"
-    local archivo="checkuser.txt"
-    #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-    local linea="${username}:${ExpirationCheck}"
-
-    # Crear o agregar
-    if [[ -f "$archivo" ]]; then
-        echo "$linea" >> "$archivo"
-    else
-        echo "$linea" > "$archivo"
-    fi
     echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
     echo -e "\n\033[1;32mIP: \033[1;37m$IP"
     echo -e "\033[1;32mToken: \033[1;37m$username"
@@ -456,7 +444,6 @@ else
     }
     final=$(date "+%Y-%m-%d" -d "+$dias days")
     gui=$(date "+%d/%m/%Y" -d "+$dias days")
-    ExpirationCheck=$(date "+%d-%m-%Y" -d "+$dias days")
     pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
     useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &
     echo "$password" >/etc/SSHPlus/senha/$username
@@ -482,17 +469,6 @@ else
                 }
             }
             clear
-            #local usuario="$1"
-            archivo="checkuser.txt"
-            #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-            linea="${username}:${ExpirationCheck}"
-
-            # Crear o agregar
-            if [[ -f "$archivo" ]]; then
-                echo "$linea" >> "$archivo"
-            else
-                echo "$linea" > "$archivo"
-            fi
             echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
             echo -e "\n\033[1;32mIP: \033[1;37m$IP"
             echo -e "\033[1;32mUsuário: \033[1;37m$username"
@@ -533,17 +509,6 @@ else
             }
         } || {
             clear
-            #local usuario="$1"
-            archivo="checkuser.txt"
-            #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-            linea="${username}:${ExpirationCheck}"
-
-            # Crear o agregar
-            if [[ -f "$archivo" ]]; then
-                echo "$linea" >> "$archivo"
-            else
-                echo "$linea" > "$archivo"
-            fi
             echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
             echo -e "\n\033[1;32mIP: \033[1;37m$IP"
             echo -e "\033[1;32mUsuário: \033[1;37m$username"
@@ -553,17 +518,6 @@ else
         }
     } || {
         clear
-        #local usuario="$1"
-        archivo="checkuser.txt"
-        #local fecha="$(date '+%Y-%m-%d %H:%M:%S')"
-        linea="${username}:${ExpirationCheck}"
-
-        # Crear o agregar
-        if [[ -f "$archivo" ]]; then
-            echo "$linea" >> "$archivo"
-        else
-            echo "$linea" > "$archivo"
-        fi
         echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
         echo -e "\n\033[1;32mIP: \033[1;37m$IP"
         echo -e "\033[1;32mUsuário: \033[1;37m$username"
@@ -573,3 +527,4 @@ else
     }
 
 fi
+
