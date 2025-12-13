@@ -2,528 +2,626 @@
 #====================================================
 #	@SONYCSSH
 #====================================================
-IP=$(cat /etc/IP)
-cor1='\033[41;1;37m'
-cor2='\033[44;1;37m'
-scor='\033[0m'
+[span_0](start_span)IP=$(cat /etc/IP)[span_0](end_span)
+[span_1](start_span)cor1='\033[41;1;37m'[span_1](end_span)
+[span_2](start_span)cor2='\033[44;1;37m'[span_2](end_span)
+[span_3](start_span)scor='\033[0m'[span_3](end_span)
 # Gerar client.ovpn
-newclient() {
-    cp /etc/openvpn/client-common.txt ~/$1.ovpn
-    echo "<ca>" >>~/$1.ovpn
-    cat /etc/openvpn/easy-rsa/pki/ca.crt >>~/$1.ovpn
-    echo "</ca>" >>~/$1.ovpn
-    echo "<cert>" >>~/$1.ovpn
-    cat /etc/openvpn/easy-rsa/pki/issued/$1.crt >>~/$1.ovpn
-    echo "</cert>" >>~/$1.ovpn
-    echo "<key>" >>~/$1.ovpn
-    cat /etc/openvpn/easy-rsa/pki/private/$1.key >>~/$1.ovpn
-    echo "</key>" >>~/$1.ovpn
-    echo "<tls-auth>" >>~/$1.ovpn
-    cat /etc/openvpn/ta.key >>~/$1.ovpn
-    echo "</tls-auth>" >>~/$1.ovpn
-}
+[span_4](start_span)newclient() {[span_4](end_span)
+    [span_5](start_span)cp /etc/openvpn/client-common.txt ~/$1.ovpn[span_5](end_span)
+    [span_6](start_span)echo "<ca>" >>~/$1.ovpn[span_6](end_span)
+    [span_7](start_span)cat /etc/openvpn/easy-rsa/pki/ca.crt >>~/$1.ovpn[span_7](end_span)
+    [span_8](start_span)echo "</ca>" >>~/$1.ovpn[span_8](end_span)
+    [span_9](start_span)echo "<cert>" >>~/$1.ovpn[span_9](end_span)
+    [span_10](start_span)cat /etc/openvpn/easy-rsa/pki/issued/$1.crt >>~/$1.ovpn[span_10](end_span)
+    [span_11](start_span)echo "</cert>" >>~/$1.ovpn[span_11](end_span)
+    [span_12](start_span)echo "<key>" >>~/$1.ovpn[span_12](end_span)
+    [span_13](start_span)cat /etc/openvpn/easy-rsa/pki/private/$1.key >>~/$1.ovpn[span_13](end_span)
+    [span_14](start_span)echo "</key>" >>~/$1.ovpn[span_14](end_span)
+    [span_15](start_span)echo "<tls-auth>" >>~/$1.ovpn[span_15](end_span)
+    [span_16](start_span)cat /etc/openvpn/ta.key >>~/$1.ovpn[span_16](end_span)
+    [span_17](start_span)echo "</tls-auth>" >>~/$1.ovpn[span_17](end_span)
+[span_18](start_span)}
 fun_geraovpn() {
     [[ "$respost" = @(s|S) ]] && {
-        cd /etc/openvpn/easy-rsa/
+       
+[span_18](end_span)  cd /etc/openvpn/easy-rsa/
         ./easyrsa build-client-full $username nopass
         newclient "$username"
-        sed -e "s;auth-user-pass;<auth-user-pass>\n$username\n$password\n</auth-user-pass>;g" /root/$username.ovpn >/root/tmp.ovpn && mv -f /root/tmp.ovpn /root/$username.ovpn
-    } || {
-        cd /etc/openvpn/easy-rsa/
-        ./easyrsa build-client-full $username nopass
-        newclient "$username"
+        [span_19](start_span)sed -e "s;auth-user-pass;<auth-user-pass>\n$username\n$password\n</auth-user-pass>;g" /root/$username.ovpn >/root/tmp.ovpn && mv -f /root/tmp.ovpn /root/$username.ovpn[span_19](end_span)
+    } ||
+[span_20](start_span) {
+        cd /etc/openvpn/easy-rsa/[span_20](end_span)
+        [span_21](start_span)./easyrsa build-client-full $username nopass[span_21](end_span)
+        [span_22](start_span)newclient "$username"[span_22](end_span)
     }
 } >/dev/null 2>&1
 [[ -e /etc/openvpn/server.conf ]] && {
-    _Port=$(grep -w 'port' /etc/openvpn/server.conf | awk {'print $2'})
-    hst=$(sed -n '8 p' /etc/openvpn/client-common.txt | awk {'print $4'})
-    rmt=$(sed -n '7 p' /etc/openvpn/client-common.txt)
-    hedr=$(sed -n '8 p' /etc/openvpn/client-common.txt)
-    prxy=$(sed -n '9 p' /etc/openvpn/client-common.txt)
-    rmt2='/SSHPLUS?'
-    rmt3='www.vivo.com.br 8088'
-    prx='200.142.130.104'
-    payload1='#payload "HTTP/1.0 [crlf]Host: m.youtube.com[crlf]CONNECT HTTP/1.0[crlf][crlf]|[crlf]"'
-    payload2='#payload "CONNECT 127.0.0.1:1194[split][crlf] HTTP/1.0 [crlf][crlf]#"'
-    vivo1="portalrecarga.vivo.com.br/recarga"
-    vivo2="portalrecarga.vivo.com.br/controle/"
-    vivo3="navegue.vivo.com.br/pre/"
-    vivo4="navegue.vivo.com.br/controle/"
-    vivo5="www.vivo.com.br"
-    oi="d1n212ccp6ldpw.cloudfront.net"
-    bypass="net_gateway"
-    cert01="/etc/openvpn/client-common.txt"
-    if [[ "$hst" == "$vivo1" ]]; then
+    _[span_23](start_span)Port=$(grep -w 'port' /etc/openvpn/server.conf | awk {'print $2'})[span_23](end_span)
+    [span_24](start_span)hst=$(sed -n '8 p' /etc/openvpn/client-common.txt | awk {'print $4'})[span_24](end_span)
+    [span_25](start_span)rmt=$(sed -n '7 p' /etc/openvpn/client-common.txt)[span_25](end_span)
+    [span_26](start_span)hedr=$(sed -n '8 p' /etc/openvpn/client-common.txt)[span_26](end_span)
+    [span_27](start_span)prxy=$(sed -n '9 p' /etc/openvpn/client-common.txt)[span_27](end_span)
+    [span_28](start_span)rmt2='/SSHPLUS?'[span_28](end_span)
+[span_29](start_span) rmt3='www.vivo.com.br 8088'
+    prx='200.142.130.104'[span_29](end_span)
+    [span_30](start_span)payload1='#payload "HTTP/1.0 [crlf]Host: m.youtube.com[crlf]CONNECT HTTP/1.0[crlf][crlf]|[crlf]"'[span_30](end_span)
+    [span_31](start_span)payload2='#payload "CONNECT 127.0.0.1:1194[split][crlf] HTTP/1.0 [crlf][crlf]#"'[span_31](end_span)
+    [span_32](start_span)vivo1="portalrecarga.vivo.com.br/recarga"[span_32](end_span)
+    [span_33](start_span)vivo2="portalrecarga.vivo.com.br/controle/"[span_33](end_span)
+    [span_34](start_span)vivo3="navegue.vivo.com.br/pre/"[span_34](end_span)
+    [span_35](start_span)vivo4="navegue.vivo.com.br/controle/"[span_35](end_span)
+    [span_36](start_span)vivo5="www.vivo.com.br"[span_36](end_span)
+    [span_37](start_span)oi="d1n212ccp6ldpw.cloudfront.net"[span_37](end_span)
+    [span_38](start_span)bypass="net_gateway"[span_38](end_span)
+    [span_39](start_span)cert01="/etc/openvpn/client-common.txt"[span_39](end_span)
+    if [[ "$hst" == "$vivo1" ]];
+[span_40](start_span) then
         Host="Portal Recarga"
-    elif [[ "$hst" == "$vivo2" ]]; then
+    elif [[ "$hst" == "$vivo2" ]];
+[span_40](end_span) then
         Host="Recarga contole"
-    elif [[ "$hst" == "$vivo3" ]]; then
+    elif [[ "$hst" == "$vivo3" ]];
+[span_41](start_span) then
         Host="Portal Navegue"
-    elif [[ "$hst" == "$vivo4" ]]; then
+    elif [[ "$hst" == "$vivo4" ]];
+[span_41](end_span) then
         Host="Nav controle"
-    elif [[ "$hst" == "$IP:$_Port" ]]; then
+    elif [[ "$hst" == "$IP:$_Port" ]];
+[span_42](start_span) then
         Host="Vivo MMS"
-    elif [[ "$hst" == "$oi" ]]; then
+    elif [[ "$hst" == "$oi" ]];
+[span_42](end_span) then
         Host="Oi"
-    elif [[ "$hst" == "$bypass" ]]; then
+    elif [[ "$hst" == "$bypass" ]];
+[span_43](start_span) then
         Host="Modo Bypass"
-    elif [[ "$hedr" == "$payload1" ]]; then
+    elif [[ "$hedr" == "$payload1" ]];
+[span_43](end_span) then
         Host="OPEN SOCKS"
-    elif [[ "$hedr" == "$payload2" ]]; then
+    elif [[ "$hedr" == "$payload2" ]];
+[span_44](start_span) then
         Host="OPEN SQUID"
     else
         Host="Customizado"
     fi
 }
 fun_bar() {
-    comando[0]="$1"
-    comando[1]="$2"
+    comando[0]="$1"[span_44](end_span)
+    [span_45](start_span)comando[1]="$2"[span_45](end_span)
     (
-        [[ -e $HOME/fim ]] && rm $HOME/fim
-        ${comando[0]} >/dev/null 2>&1
-        ${comando[1]} >/dev/null 2>&1
-        touch $HOME/fim
-    ) >/dev/null 2>&1 &
-    tput civis
-    echo -ne "\033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+        [span_46](start_span)[[ -e $HOME/fim ]] && rm $HOME/fim[span_46](end_span)
+        [span_47](start_span)${comando[0]} >/dev/null 2>&1[span_47](end_span)
+        [span_48](start_span)${comando[1]} >/dev/null 2>&1[span_48](end_span)
+        [span_49](start_span)touch $HOME/fim[span_49](end_span)
+    [span_50](start_span)) >/dev/null 2>&1 &[span_50](end_span)
+    [span_51](start_span)tput civis[span_51](end_span)
+    echo -ne "\033[1;33mAGUARDE 
+[span_52](start_span) \033[1;37m- \033[1;33m["
     while true; do
-        for ((i = 0; i < 18; i++)); do
-            echo -ne "\033[1;31m#"
-            sleep 0.1s
+        for ((i = 0; i < 18; i++));
+[span_52](end_span) do
+            [span_53](start_span)echo -ne "\033[1;31m#"[span_53](end_span)
+            [span_54](start_span)sleep 0.1s[span_54](end_span)
         done
-        [[ -e $HOME/fim ]] && rm $HOME/fim && break
-        echo -e "\033[1;33m]"
-        sleep 1s
-        tput cuu1
-        tput dl1
-        echo -ne "\033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+        [span_55](start_span)[[ -e $HOME/fim ]] && rm $HOME/fim && break[span_55](end_span)
+        [span_56](start_span)echo -e "\033[1;33m]"[span_56](end_span)
+        [span_57](start_span)sleep 1s[span_57](end_span)
+        [span_58](start_span)tput cuu1[span_58](end_span)
+        [span_59](start_span)tput dl1[span_59](end_span)
+        echo -ne "\033[1;33mAGUARDE \033[1;37m- 
+[span_60](start_span) \033[1;33m["
     done
-    echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
-    tput cnorm
+    echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"[span_60](end_span)
+    [span_61](start_span)tput cnorm[span_61](end_span)
 }
 fun_edithost() {
-    clear
-    echo -e "\E[44;1;37m          ALTERAR HOST OVPN            \E[0m"
-    echo ""
-    echo -e "\033[1;33mHOST EM USO\033[1;37m: \033[1;32m$Host"
-    echo ""
-    echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;33mVIVO RECARGA"
-    echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;33mVIVO NAVEGUE PRE"
+    [span_62](start_span)clear[span_62](end_span)
+    [span_63](start_span)echo -e "\E[44;1;37m          ALTERAR HOST OVPN            \E[0m"[span_63](end_span)
+    [span_64](start_span)echo ""[span_64](end_span)
+    [span_65](start_span)echo -e "\033[1;33mHOST EM USO\033[1;37m: \033[1;32m$Host"[span_65](end_span)
+    [span_66](start_span)echo ""[span_66](end_span)
+    [span_67](start_span)echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;33mVIVO RECARGA"[span_67](end_span)
+    [span_68](start_span)echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;33mVIVO NAVEGUE PRE"[span_68](end_span)
     echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;33mOPEN SOCKS \033[1;31m[\033[1;32mAPP MOD\033[1;31m]"
-    echo -e "\033[1;31m[\033[1;36m4\033[1;31m] \033[1;33mOPEN SQUID \033[1;31m[\033[1;32mAPP MOD\033[1;31m]"
-    echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;33mVIVO MMS \033[1;31m[\033[1;37mAPN: \033[1;32mmms.vivo.com.br\033[1;31m]"
-    echo -e "\033[1;31m[\033[1;36m6\033[1;31m] \033[1;33mMODO BYPASS \033[1;31m[\033[1;32mOPEN + INJECTOR\033[1;31m]"
-    echo -e "\033[1;31m[\033[1;36m7\033[1;31m] \033[1;33mTODOS HOSTS \033[1;31m[\033[1;32m1 OVPN DE CADA\033[1;31m]"
-    echo -e "\033[1;31m[\033[1;36m8\033[1;31m] \033[1;33mEDITAR MANUALMENTE"
-    echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;33mVOLTAR"
-    echo ""
-    echo -ne "\033[1;32mQUAL HOST DESEJA ULTILIZAR \033[1;33m?\033[1;37m "
-    read respo
+ 
+[span_69](start_span)    echo -e "\033[1;31m[\033[1;36m4\033[1;31m] \033[1;33mOPEN SQUID \033[1;31m[\033[1;32mAPP MOD\033[1;31m]"
+    echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;33mVIVO MMS \033[1;31m[\033[1;37mAPN: \033[1;32mmms.vivo.com.br\033[1;31m]"[span_69](end_span)
+    [span_70](start_span)echo -e "\033[1;31m[\033[1;36m6\033[1;31m] \033[1;33mMODO BYPASS \033[1;31m[\033[1;32mOPEN + INJECTOR\033[1;31m]"[span_70](end_span)
+    [span_71](start_span)echo -e "\033[1;31m[\033[1;36m7\033[1;31m] \033[1;33mTODOS HOSTS \033[1;31m[\033[1;32m1 OVPN DE CADA\033[1;31m]"[span_71](end_span)
+    [span_72](start_span)echo -e "\033[1;31m[\033[1;36m8\033[1;31m] \033[1;33mEDITAR MANUALMENTE"[span_72](end_span)
+    [span_73](start_span)echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;33mVOLTAR"[span_73](end_span)
+    [span_74](start_span)echo ""[span_74](end_span)
+    [span_75](start_span)echo -ne "\033[1;32mQUAL HOST DESEJA ULTILIZAR \033[1;33m?\033[1;37m "[span_75](end_span)
+    [span_76](start_span)read respo[span_76](end_span)
     [[ -z "$respo" ]] && {
         echo -e "\n\033[1;31mOpcao invalida!"
-        sleep 2
-        fun_edithost
+[span_77](start_span) sleep 2
+        fun_edithost[span_77](end_span)
     }
-    if [[ "$respo" = '1' ]]; then
+    if [[ "$respo" = '1' ]];
+[span_78](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althost() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo1\nhttp-proxy $IP 80" $cert01
+            sed -i "7,9"d $cert01[span_78](end_span)
+            [span_79](start_span)sleep 1[span_79](end_span)
+            [span_80](start_span)sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo1\nhttp-proxy $IP 80" $cert01[span_80](end_span)
         }
-        fun_bar 'fun_althost'
-        echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '2' ]]; then
+        [span_81](start_span)fun_bar 'fun_althost'[span_81](end_span)
+        echo -e "\n\033[1;32mHOST ALTERADO COM 
+[span_82](start_span) SUCESSO!\033[0m"
+        fun_geraovpn[span_82](end_span)
+        [span_83](start_span)sleep 1.5[span_83](end_span)
+    elif [[ "$respo" = '2' ]];
+[span_84](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althost2() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo3\nhttp-proxy $IP 80" $cert01
+            sed -i "7,9"d $cert01[span_84](end_span)
+            [span_85](start_span)sleep 1[span_85](end_span)
+            [span_86](start_span)sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo3\nhttp-proxy $IP 80" $cert01[span_86](end_span)
         }
-        fun_bar 'fun_althost2'
-        echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '3' ]]; then
+        [span_87](start_span)fun_bar 'fun_althost2'[span_87](end_span)
+        echo -e "\n\033[1;32mHOST ALTERADO COM 
+[span_88](start_span) SUCESSO!\033[0m"
+        fun_geraovpn[span_88](end_span)
+        [span_89](start_span)sleep 1.5[span_89](end_span)
+    elif [[ "$respo" = '3' ]];
+[span_90](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althostpay1() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $rmt2 $_Port\n$payload1\nhttp-proxy $IP 8080" $cert01
+            sed -i "7,9"d $cert01[span_90](end_span)
+            [span_91](start_span)sleep 1[span_91](end_span)
+            [span_92](start_span)sed -i "7i\remote $rmt2 $_Port\n$payload1\nhttp-proxy $IP 8080" $cert01[span_92](end_span)
         }
-        fun_bar 'fun_althostpay1'
+        [span_93](start_span)fun_bar 'fun_althostpay1'[span_93](end_span)
         echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '4' ]]; then
+   
+[span_94](start_span)      fun_geraovpn
+        sleep 1.5[span_94](end_span)
+    elif [[ "$respo" = '4' ]];
+[span_95](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althostpay2() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $rmt2 $_Port\n$payload2\nhttp-proxy $IP 80" $cert01
+            sed -i "7,9"d $cert01[span_95](end_span)
+            [span_96](start_span)sleep 1[span_96](end_span)
+            [span_97](start_span)sed -i "7i\remote $rmt2 $_Port\n$payload2\nhttp-proxy $IP 80" $cert01[span_97](end_span)
         }
-        fun_bar 'fun_althostpay2'
+        [span_98](start_span)fun_bar 'fun_althostpay2'[span_98](end_span)
         echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '5' ]]; then
+   
+[span_99](start_span)      fun_geraovpn
+        sleep 1.5[span_99](end_span)
+    elif [[ "$respo" = '5' ]];
+[span_100](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althost5() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $rmt3\nhttp-proxy-option CUSTOM-HEADER Host $vivo3\nhttp-proxy $prx:$_Port" $cert01
+            sed -i "7,9"d $cert01[span_100](end_span)
+            [span_101](start_span)sleep 1[span_101](end_span)
+            [span_102](start_span)sed -i "7i\remote $rmt3\nhttp-proxy-option CUSTOM-HEADER Host $vivo3\nhttp-proxy $prx:$_Port" $cert01[span_102](end_span)
         }
-        fun_bar 'fun_althost5'
+        [span_103](start_span)fun_bar 'fun_althost5'[span_103](end_span)
         echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '6' ]]; then
+  
+[span_104](start_span)       fun_geraovpn
+        sleep 1.5[span_104](end_span)
+    elif [[ "$respo" = '6' ]];
+[span_105](start_span) then
         echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
         fun_althost6() {
-            sed -i "7,9"d $cert01
-            sleep 1
-            sed -i "7i\remote $IP $_Port\nroute $IP 255.255.255.255 net_gateway\nhttp-proxy 127.0.0.1 8989" $cert01
+            sed -i "7,9"d $cert01[span_105](end_span)
+            [span_106](start_span)sleep 1[span_106](end_span)
+            [span_107](start_span)sed -i "7i\remote $IP $_Port\nroute $IP 255.255.255.255 net_gateway\nhttp-proxy 127.0.0.1 8989" $cert01[span_107](end_span)
         }
-        fun_bar 'fun_althost6'
-        echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '7' ]]; then
-        [[ ! -e "$HOME/$username.ovpn" ]] && fun_geraovpn
-        echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"
+        [span_108](start_span)fun_bar 'fun_althost6'[span_108](end_span)
+        echo -e "\n\033[1;32mHOST ALTERADO COM 
+[span_109](start_span) SUCESSO!\033[0m"
+        fun_geraovpn[span_109](end_span)
+        [span_110](start_span)sleep 1.5[span_110](end_span)
+    elif [[ "$respo" = '7' ]];
+[span_111](start_span) then
+        [[ !
+[span_111](end_span) -e "$HOME/$username.ovpn" ]] && fun_geraovpn
+        [span_112](start_span)echo -e "\n\033[1;32mALTERANDO HOST!\033[0m\n"[span_112](end_span)
         fun_packhost() {
-            [[ ! -d "$HOME/OVPN" ]] && mkdir $HOME/OVPN
-            sed -i "7,9"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo1\nhttp-proxy $IP 80" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-vivo1.ovpn
-            sed -i "8"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "8i\http-proxy-option CUSTOM-HEADER Host $vivo3" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-vivo2.ovpn
-            sed -i "7,9"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "7i\remote $rmt3\nhttp-proxy-option CUSTOM-HEADER Host $IP:$_Port\nhttp-proxy $prx 80" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-vivo3.ovpn
-            sed -i "7,9"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "7i\remote $IP $_Port\nroute $IP 255.255.255.255 net_gateway\nhttp-proxy 127.0.0.1 8989" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-bypass.ovpn
-            sed -i "7,9"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "7i\remote $rmt2 $_Port\n$payload1\nhttp-proxy $IP 8080" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-socks.ovpn
-            sed -i "7,9"d $HOME/$username.ovpn
-            sleep 0.5
-            sed -i "7i\remote $rmt2 $_Port\n$payload2\nhttp-proxy $IP 80" $HOME/$username.ovpn
-            cp $HOME/$username.ovpn /root/OVPN/$username-squid.ovpn
-            cd $HOME/OVPN && zip $username.zip *.ovpn >/dev/null 2>&1 && cp $username.zip $HOME/$username.zip
-            cd $HOME && rm -rf /root/OVPN >/dev/null 2>&1
+            [[ !
+[span_113](start_span) -d "$HOME/OVPN" ]] && mkdir $HOME/OVPN
+            sed -i "7,9"d $HOME/$username.ovpn[span_113](end_span)
+            [span_114](start_span)sleep 0.5[span_114](end_span)
+            [span_115](start_span)sed -i "7i\remote $rmt2 $_Port\nhttp-proxy-option CUSTOM-HEADER Host $vivo1\nhttp-proxy $IP 80" $HOME/$username.ovpn[span_115](end_span)
+            [span_116](start_span)cp $HOME/$username.ovpn /root/OVPN/$username-vivo1.ovpn[span_116](end_span)
+            [span_117](start_span)sed -i "8"d $HOME/$username.ovpn[span_117](end_span)
+            [span_118](start_span)sleep 0.5[span_118](end_span)
+   
+[span_119](start_span)          sed -i "8i\http-proxy-option CUSTOM-HEADER Host $vivo3" $HOME/$username.ovpn
+            cp $HOME/$username.ovpn /root/OVPN/$username-vivo2.ovpn[span_119](end_span)
+            [span_120](start_span)sed -i "7,9"d $HOME/$username.ovpn[span_120](end_span)
+            [span_121](start_span)sleep 0.5[span_121](end_span)
+            [span_122](start_span)sed -i "7i\remote $rmt3\nhttp-proxy-option CUSTOM-HEADER Host $IP:$_Port\nhttp-proxy $prx 80" $HOME/$username.ovpn[span_122](end_span)
+            [span_123](start_span)cp $HOME/$username.ovpn /root/OVPN/$username-vivo3.ovpn[span_123](end_span)
+        
+[span_124](start_span)     sed -i "7,9"d $HOME/$username.ovpn
+            sleep 0.5[span_124](end_span)
+            [span_125](start_span)sed -i "7i\remote $IP $_Port\nroute $IP 255.255.255.255 net_gateway\nhttp-proxy 127.0.0.1 8989" $HOME/$username.ovpn[span_125](end_span)
+            [span_126](start_span)cp $HOME/$username.ovpn /root/OVPN/$username-bypass.ovpn[span_126](end_span)
+            [span_127](start_span)sed -i "7,9"d $HOME/$username.ovpn[span_127](end_span)
+            [span_128](start_span)sleep 0.5[span_128](end_span)
+            sed -i "7i\remote $rmt2 
+[span_129](start_span) $_Port\n$payload1\nhttp-proxy $IP 8080" $HOME/$username.ovpn
+            cp $HOME/$username.ovpn /root/OVPN/$username-socks.ovpn[span_129](end_span)
+            [span_130](start_span)sed -i "7,9"d $HOME/$username.ovpn[span_130](end_span)
+            [span_131](start_span)sleep 0.5[span_131](end_span)
+            [span_132](start_span)sed -i "7i\remote $rmt2 $_Port\n$payload2\nhttp-proxy $IP 80" $HOME/$username.ovpn[span_132](end_span)
+            [span_133](start_span)cp $HOME/$username.ovpn /root/OVPN/$username-squid.ovpn[span_133](end_span)
+            cd $HOME/OVPN && zip $username.zip *.ovpn >/dev/null 2>&1 && cp 
+[span_134](start_span) $username.zip $HOME/$username.zip
+            cd $HOME && rm -rf /root/OVPN >/dev/null 2>&1[span_134](end_span)
         }
-        fun_bar 'fun_packhost'
-        echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"
-        sleep 1.5
-    elif [[ "$respo" = '8' ]]; then
-        echo ""
-        echo -e "\033[1;32mALTERANDO ARQUIVO OVPN!\033[0m"
-        echo ""
-        echo -e "\033[1;31mATENCAO!\033[0m"
-        echo ""
-        echo -e "\033[1;33mPARA SALVAR USE AS TECLAS \033[1;32mctrl x y\033[0m"
-        sleep 4
-        clear
-        nano /etc/openvpn/client-common.txt
-        echo ""
-        echo -e "\033[1;32mALTERADO COM SUCESSO!\033[0m"
-        fun_geraovpn
-        sleep 1.5
-    elif [[ "$respo" = '0' ]]; then
-        echo ""
-        echo -e "\033[1;31mRetornando...\033[0m"
-        sleep 2
+        [span_135](start_span)fun_bar 'fun_packhost'[span_135](end_span)
+        [span_136](start_span)echo -e "\n\033[1;32mHOST ALTERADO COM SUCESSO!\033[0m"[span_136](end_span)
+        [span_137](start_span)sleep 1.5[span_137](end_span)
+    elif [[ "$respo" = '8' ]];
+[span_138](start_span) then
+        echo ""[span_138](end_span)
+        [span_139](start_span)echo -e "\033[1;32mALTERANDO ARQUIVO OVPN!\033[0m"[span_139](end_span)
+        [span_140](start_span)echo ""[span_140](end_span)
+        [span_141](start_span)echo -e "\033[1;31mATENCAO!\033[0m"[span_141](end_span)
+        [span_142](start_span)echo ""[span_142](end_span)
+        [span_143](start_span)echo -e "\033[1;33mPARA SALVAR USE AS TECLAS \033[1;32mctrl x y\033[0m"[span_143](end_span)
+        [span_144](start_span)sleep 4[span_144](end_span)
+        [span_145](start_span)clear[span_145](end_span)
+        [span_146](start_span)nano /etc/openvpn/client-common.txt[span_146](end_span)
+        
+[span_147](start_span) echo ""
+        echo -e "\033[1;32mALTERADO COM SUCESSO!\033[0m"[span_147](end_span)
+        [span_148](start_span)fun_geraovpn[span_148](end_span)
+        [span_149](start_span)sleep 1.5[span_149](end_span)
+    elif [[ "$respo" = '0' ]];
+[span_150](start_span) then
+        echo ""[span_150](end_span)
+        [span_151](start_span)echo -e "\033[1;31mRetornando...\033[0m"[span_151](end_span)
+        [span_152](start_span)sleep 2[span_152](end_span)
     else
-        echo ""
-        echo -e "\033[1;31mOpcao invalida !\033[0m"
-        sleep 2
-        fun_edithost
+        [span_153](start_span)echo ""[span_153](end_span)
+        [span_154](start_span)echo -e "\033[1;31mOpcao invalida !\033[0m"[span_154](end_span)
+        [span_155](start_span)sleep 2[span_155](end_span)
+        [span_156](start_span)fun_edithost[span_156](end_span)
     fi
 }
 
 fun_usertoken() {
-    clear
-    tput setaf 7
-    tput setab 4
-    tput bold
-    printf '%30s%s%-15s\n' "Criar Token SSH"
-    tput sgr0
-    echo ""
-    echo -ne "\033[1;32mInsira o Token:\033[1;37m "
-    read username
+    [span_157](start_span)clear[span_157](end_span)
+    [span_158](start_span)tput setaf 7[span_158](end_span)
+    [span_159](start_span)tput setab 4[span_159](end_span)
+    [span_160](start_span)tput bold[span_160](end_span)
+    
+[span_161](start_span) printf '%30s%s%-15s\n' "Criar Token SSH"
+    tput sgr0[span_161](end_span)
+    [span_162](start_span)echo ""[span_162](end_span)
+    [span_163](start_span)echo -ne "\033[1;32mInsira o Token:\033[1;37m "[span_163](end_span)
+    [span_164](start_span)read username[span_164](end_span)
     [[ -z $username ]] && {
-        echo -e "\n${cor1}Token vazio ou invalido!${scor}\n"
-        exit 1
+        [span_165](start_span)echo -e "\n${cor1}Token vazio ou invalido!${scor}\n"[span_165](end_span)
+        [span_166](start_span)exit 1[span_166](end_span)
     }
     [[ "$(grep -wc $username /etc/passwd)" != '0' ]] && {
         echo -e "\n${cor1}Este Token já existe. tente outro Token!${scor}\n"
-        exit 1
+        
+[span_167](start_span) exit 1
     }
     [[ ${username} != ?(+|-)+([a-zA-Z0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um Token inválido!${scor}"
-        echo -e "${cor1}Não use espaços, acentos ou caracteres especiais!${scor}\n"
-        exit 1
+        echo -e "\n${cor1}Você digitou um Token inválido!${scor}"[span_167](end_span)
+        [span_168](start_span)echo -e "${cor1}Não use espaços, acentos ou caracteres especiais!${scor}\n"[span_168](end_span)
+        [span_169](start_span)exit 1[span_169](end_span)
     }
-    sizemin=$(echo ${#username})
+    [span_170](start_span)sizemin=$(echo ${#username})[span_170](end_span)
     [[ $sizemin -lt 2 ]] && {
-        echo -e "\n${cor1}Você digitou um Token muito curto${scor}"
-        echo -e "${cor1}use no mínimo dois caracteres!${scor}\n"
-        exit 1
+        [span_171](start_span)echo -e "\n${cor1}Você digitou um Token muito curto${scor}"[span_171](end_span)
+        echo -e "${cor1}use no 
+[span_172](start_span) mínimo dois caracteres!${scor}\n"
+        exit 1[span_172](end_span)
     }
-    echo -ne "\033[1;32mDias para expirar:\033[1;37m "
-    read dias
+    [span_173](start_span)echo -ne "\033[1;32mDias para expirar:\033[1;37m "[span_173](end_span)
+    [span_174](start_span)read dias[span_174](end_span)
     [[ -z $dias ]] && {
-        echo -e "\n${cor1}Numero de dias vazio!${scor}\n"
-        exit 1
+        [span_175](start_span)echo -e "\n${cor1}Numero de dias vazio!${scor}\n"[span_175](end_span)
+        [span_176](start_span)exit 1[span_176](end_span)
     }
     [[ ${dias} != ?(+|-)+([0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um número de dias inválido!${scor}\n"
+        [span_177](start_span)echo -e "\n${cor1}Você digitou um número de dias inválido!${scor}\n"[span_177](end_span)
         exit 1
-    }
+ 
+[span_178](start_span)    }
     [[ $dias -lt 1 ]] && {
-        echo -e "\n${cor1}O número deve ser maior que zero!${scor}\n"
-        exit 1
+        echo -e "\n${cor1}O número deve ser maior que zero!${scor}\n"[span_178](end_span)
+        [span_179](start_span)exit 1[span_179](end_span)
     }
-    echo -ne "\033[1;32mLimite de conexões:\033[1;37m "
-    read sshlimiter
+    [span_180](start_span)echo -ne "\033[1;32mLimite de conexões:\033[1;37m "[span_180](end_span)
+    [span_181](start_span)read sshlimiter[span_181](end_span)
     [[ -z $sshlimiter ]] && {
-        echo -e "\n${cor1}Você deixou o limite de conexões vazio!${scor}\n"
-        exit 1
+        [span_182](start_span)echo -e "\n${cor1}Você deixou o limite de conexões vazio!${scor}\n"[span_182](end_span)
+        [span_183](start_span)exit 1[span_183](end_span)
     }
-    [[ ${sshlimiter} != ?(+|-)+([0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um número de conexões inválido!${scor}\n"
-        exit 1
+    [[ ${sshlimiter} 
+[span_184](start_span)!= ?(+|-)+([0-9]) ]] && {
+        echo -e "\n${cor1}Você digitou um número de conexões inválido!${scor}\n"[span_184](end_span)
+        [span_185](start_span)exit 1[span_185](end_span)
     }
     [[ $sshlimiter -lt 1 ]] && {
-        echo -e "\n${cor1}Número de conexões simultâneas deve ser maior que zero!${scor}\n"
-        exit 1
+        [span_186](start_span)echo -e "\n${cor1}Número de conexões simultâneas deve ser maior que zero!${scor}\n"[span_186](end_span)
+        [span_187](start_span)exit 1[span_187](end_span)
     }
-    password=$(cat /etc/SSHPlus/Token.txt)
-    final=$(date "+%Y-%m-%d" -d "+$dias days")
-    gui=$(date "+%d/%m/%Y" -d "+$dias days")
-    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-    useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &
-    echo "$password" >/etc/SSHPlus/senha/$username
-    echo "$username $sshlimiter" >>/root/usuarios.db
-    clear
-    echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
-    echo -e "\n\033[1;32mIP: \033[1;37m$IP"
-    echo -e "\033[1;32mToken: \033[1;37m$username"
-    echo -e "\033[1;32mExpira em: \033[1;37m$gui"
-    echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
+    [span_188](start_span)password=$(cat /etc/SSHPlus/Token.txt)[span_188](end_span)
+    [span_189](start_span)final=$(date "+%Y-%m-%d" -d "+$dias days")[span_189](end_span)
+    [span_190](start_span)gui=$(date "+%d/%m/%Y" -d "+$dias days")[span_190](end_span)
+    pass=$(perl 
+[span_191](start_span) -e 'print crypt($ARGV[0], "password")' $password)
+    useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &[span_191](end_span)
+    [span_192](start_span)echo "$password" >/etc/SSHPlus/senha/$username[span_192](end_span)
+    [span_193](start_span)echo "$username $sshlimiter" >>/root/usuarios.db[span_193](end_span)
+    
+    # === REGISTRO CHECKUSER (TOKEN) ===
+    local archivo="/root/checkuser.txt"
+    local linea="${username}:${final}"
+
+    # Crear o agregar
+    if [[ -f "$archivo" ]]; then
+        echo "$linea" >> "$archivo"
+    else
+        echo "$linea" > "$archivo"
+    fi
+    # ==================================
+
+    [span_194](start_span)clear[span_194](end_span)
+    echo -e "\E[44;1;37m       CONTA SSH CRIADA !
+[span_195](start_span) \E[0m"
+    echo -e "\n\033[1;32mIP: \033[1;37m$IP"[span_195](end_span)
+    [span_196](start_span)echo -e "\033[1;32mToken: \033[1;37m$username"[span_196](end_span)
+    [span_197](start_span)echo -e "\033[1;32mExpira em: \033[1;37m$gui"[span_197](end_span)
+    [span_198](start_span)echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"[span_198](end_span)
 
 }
-[[ ! -e /usr/lib/sshplus ]] && exit 0
-clear
-tput setaf 7
-tput setab 4
-tput bold
-printf '%30s%s%-15s\n' "Criar Usuário SSH"
-tput sgr0
-echo ""
-read -p "$(echo -ne "\033[1;32mDeseja usar Token? \033[1;33m[s/n]:\033[1;37m") " -e -i n resp
-if [[ "$resp" = 's' ]]; then
-    clear
-    if [ -e "/etc/SSHPlus/Token.txt" ]; then
-        fun_usertoken
+[[ ! -[span_199](start_span)e /usr/lib/sshplus ]] && exit 0[span_199](end_span)
+[span_200](start_span)clear[span_200](end_span)
+[span_201](start_span)tput setaf 7[span_201](end_span)
+[span_202](start_span)tput setab 4[span_202](end_span)
+[span_203](start_span)tput bold[span_203](end_span)
+[span_204](start_span)printf '%30s%s%-15s\n' "Criar Usuário SSH"[span_204](end_span)
+[span_205](start_span)tput sgr0[span_205](end_span)
+[span_206](start_span)echo ""[span_206](end_span)
+[span_207](start_span)read -p "$(echo -ne "\033[1;32mDeseja usar Token? \033[1;33m[s/n]:\033[1;37m") " -e -i n resp[span_207](end_span)
+[span_208](start_span)if [[ "$resp" = 's' ]]; then[span_208](end_span)
+    [span_209](start_span)clear[span_209](end_span)
+    [span_210](start_span)if [ -e "/etc/SSHPlus/Token.txt" ]; then[span_210](end_span)
+        [span_211](start_span)fun_usertoken[span_211](end_span)
     else
-        clear
-        tput setaf 7
-        tput setab 4
-        tput bold
-        printf '%30s%s%-15s\n' "Senha não encontrada"
-        tput sgr0
-        echo ""
-        echo -ne "\033[1;32mUma senha ainda não foi cadastrada, aperte enter para cadastrar: \033[1;37m "
-        read i
-        clear
-        tput setaf 7
-        tput setab 4
-        tput bold
-        printf '%30s%s%-15s\n' "Criar senha do Token"
-        tput sgr0
-        echo ""
-        echo -ne "\033[1;32mInforme uma senha: \033[1;37m "
-        read senha
+        
+[span_212](start_span) clear
+        tput setaf 7[span_212](end_span)
+        [span_213](start_span)tput setab 4[span_213](end_span)
+        [span_214](start_span)tput bold[span_214](end_span)
+        [span_215](start_span)printf '%30s%s%-15s\n' "Senha não encontrada"[span_215](end_span)
+        [span_216](start_span)tput sgr0[span_216](end_span)
+        [span_217](start_span)echo ""[span_217](end_span)
+        [span_218](start_span)echo -ne "\033[1;32mUma senha ainda não foi cadastrada, aperte enter para cadastrar: \033[1;37m "[span_218](end_span)
+        [span_219](start_span)read i[span_219](end_span)
+        [span_220](start_span)clear[span_220](end_span)
+   
+[span_221](start_span)      tput setaf 7
+        tput setab 4[span_221](end_span)
+        [span_222](start_span)tput bold[span_222](end_span)
+        [span_223](start_span)printf '%30s%s%-15s\n' "Criar senha do Token"[span_223](end_span)
+        [span_224](start_span)tput sgr0[span_224](end_span)
+        [span_225](start_span)echo ""[span_225](end_span)
+        [span_226](start_span)echo -ne "\033[1;32mInforme uma senha: \033[1;37m "[span_226](end_span)
+        [span_227](start_span)read senha[span_227](end_span)
         [[ -z $senha ]] && {
-            echo -e "\n${cor1}Senha vazia ou invalida!${scor}\n"
-            exit 1
+       
+[span_228](start_span)      echo -e "\n${cor1}Senha vazia ou invalida!${scor}\n"
+            exit 1[span_228](end_span)
         }
-        echo $senha >/etc/SSHPlus/Token.txt
-        echo -ne "\033[1;32mCadastro feito com sucesso✅\033[1;37m "
-        echo ""
-        sleep 2
-        fun_usertoken
+        [span_229](start_span)echo $senha >/etc/SSHPlus/Token.txt[span_229](end_span)
+        [span_230](start_span)echo -ne "\033[1;32mCadastro feito com sucesso✅\033[1;37m "[span_230](end_span)
+        [span_231](start_span)echo ""[span_231](end_span)
+        [span_232](start_span)sleep 2[span_232](end_span)
+        [span_233](start_span)fun_usertoken[span_233](end_span)
 
     fi
 
 else
 
-    clear
-    tput setaf 7
-    tput setab 4
-    tput bold
-    printf '%30s%s%-15s\n' "Criar Usuário SSH"
-    tput sgr0
-    echo ""
-    echo -ne "\033[1;32mNome do usuário:\033[1;37m "
-    read username
+    [span_234](start_span)clear[span_234](end_span)
+    [span_235](start_span)tput setaf 7[span_235](end_span)
+    tput 
+[span_236](start_span) setab 4
+    tput bold[span_236](end_span)
+    [span_237](start_span)printf '%30s%s%-15s\n' "Criar Usuário SSH"[span_237](end_span)
+    [span_238](start_span)tput sgr0[span_238](end_span)
+    [span_239](start_span)echo ""[span_239](end_span)
+    [span_240](start_span)echo -ne "\033[1;32mNome do usuário:\033[1;37m "[span_240](end_span)
+    [span_241](start_span)read username[span_241](end_span)
     [[ -z $username ]] && {
-        echo -e "\n${cor1}Nome de usuário vazio ou invalido!${scor}\n"
-        exit 1
+        [span_242](start_span)echo -e "\n${cor1}Nome de usuário vazio ou invalido!${scor}\n"[span_242](end_span)
+        [span_243](start_span)exit 1[span_243](end_span)
     }
     [[ "$(grep -wc $username /etc/passwd)" != '0' ]] && {
-        echo -e "\n${cor1}Este usuário já existe. tente outro nome!${scor}\n"
-        exit 1
+        echo -e "\n${cor1}Este usuário 
+[span_244](start_span) já existe. tente outro nome!${scor}\n"
+        exit 1[span_244](end_span)
     }
     [[ ${username} != ?(+|-)+([a-zA-Z0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um nome de usuário inválido!${scor}"
-        echo -e "${cor1}Não use espaços, acentos ou caracteres especiais!${scor}\n"
-        exit 1
+        [span_245](start_span)echo -e "\n${cor1}Você digitou um nome de usuário inválido!${scor}"[span_245](end_span)
+        [span_246](start_span)echo -e "${cor1}Não use espaços, acentos ou caracteres especiais!${scor}\n"[span_246](end_span)
+        [span_247](start_span)exit 1[span_247](end_span)
     }
-    sizemin=$(echo ${#username})
+    [span_248](start_span)sizemin=$(echo ${#username})[span_248](end_span)
     [[ $sizemin -lt 2 ]] && {
-        echo -e "\n${cor1}Você digitou um nome de usuário muito curto${scor}"
-        echo -e "${cor1}use no mínimo dois caracteres!${scor}\n"
-        exit 1
+        echo -e "\n${cor1}Você digitou um 
+[span_249](start_span) nome de usuário muito curto${scor}"
+        echo -e "${cor1}use no mínimo dois caracteres!${scor}\n"[span_249](end_span)
+        [span_250](start_span)exit 1[span_250](end_span)
     }
-    sizemax=$(echo ${#username})
+    [span_251](start_span)sizemax=$(echo ${#username})[span_251](end_span)
     [[ $sizemax -gt 10 ]] && {
-        echo -e "\n${cor1}Você digitou um nome de usuário muito grande"
-        echo -e "${cor1}use no máximo 10 caracteres!${scor}\n"
-        exit 1
+        [span_252](start_span)echo -e "\n${cor1}Você digitou um nome de usuário muito grande"[span_252](end_span)
+        [span_253](start_span)echo -e "${cor1}use no máximo 10 caracteres!${scor}\n"[span_253](end_span)
+        [span_254](start_span)exit 1[span_254](end_span)
     }
-    echo -ne "\033[1;32mSenha:\033[1;37m "
-    read password
+    [span_255](start_span)echo -ne "\033[1;32mSenha:\033[1;37m "[span_255](end_span)
+   
+[span_256](start_span)  read password
     [[ -z $password ]] && {
-        echo -e "\n${cor1}Senha vazia ou invalida!${scor}\n"
-        exit 1
+        echo -e "\n${cor1}Senha vazia ou invalida!${scor}\n"[span_256](end_span)
+        [span_257](start_span)exit 1[span_257](end_span)
     }
-    sizepass=$(echo ${#password})
+    [span_258](start_span)sizepass=$(echo ${#password})[span_258](end_span)
     [[ $sizepass -lt 4 ]] && {
-        echo -e "\n${cor1}Senha curta!, use no mínimo 4 caracteres${scor}\n"
-        exit 1
+        [span_259](start_span)echo -e "\n${cor1}Senha curta!, use no mínimo 4 caracteres${scor}\n"[span_259](end_span)
+        [span_260](start_span)exit 1[span_260](end_span)
     }
-    echo -ne "\033[1;32mDias para expirar:\033[1;37m "
-    read dias
-    [[ -z $dias ]] && {
+    [span_261](start_span)echo -ne "\033[1;32mDias para expirar:\033[1;37m "[span_261](end_span)
+    [span_262](start_span)read dias[span_262](end_span)
+    [[ 
+[span_263](start_span) -z $dias ]] && {
         echo -e "\n${cor1}Numero de dias vazio!${scor}\n"
-        exit 1
+        exit 1[span_263](end_span)
     }
     [[ ${dias} != ?(+|-)+([0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um número de dias inválido!${scor}\n"
-        exit 1
+        [span_264](start_span)echo -e "\n${cor1}Você digitou um número de dias inválido!${scor}\n"[span_264](end_span)
+        [span_265](start_span)exit 1[span_265](end_span)
     }
     [[ $dias -lt 1 ]] && {
-        echo -e "\n${cor1}O número deve ser maior que zero!${scor}\n"
-        exit 1
+        [span_266](start_span)echo -e "\n${cor1}O número deve ser maior que zero!${scor}\n"[span_266](end_span)
+     
+[span_267](start_span)    exit 1
     }
-    echo -ne "\033[1;32mLimite de conexões:\033[1;37m "
-    read sshlimiter
+    echo -ne "\033[1;32mLimite de conexões:\033[1;37m "[span_267](end_span)
+    [span_268](start_span)read sshlimiter[span_268](end_span)
     [[ -z $sshlimiter ]] && {
-        echo -e "\n${cor1}Você deixou o limite de conexões vazio!${scor}\n"
-        exit 1
+        [span_269](start_span)echo -e "\n${cor1}Você deixou o limite de conexões vazio!${scor}\n"[span_269](end_span)
+        [span_270](start_span)exit 1[span_270](end_span)
     }
     [[ ${sshlimiter} != ?(+|-)+([0-9]) ]] && {
-        echo -e "\n${cor1}Você digitou um número de conexões inválido!${scor}\n"
-        exit 1
+        [span_271](start_span)echo -e "\n${cor1}Você digitou um número de conexões inválido!${scor}\n"[span_271](end_span)
+        [span_272](start_span)exit 1[span_272](end_span)
     }
-    [[ $sshlimiter -lt 1 ]] && {
+ 
+[span_273](start_span)    [[ $sshlimiter -lt 1 ]] && {
         echo -e "\n${cor1}Número de conexões simultâneas deve ser maior que zero!${scor}\n"
-        exit 1
+        exit 1[span_273](end_span)
     }
-    final=$(date "+%Y-%m-%d" -d "+$dias days")
-    gui=$(date "+%d/%m/%Y" -d "+$dias days")
-    pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-    useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &
-    echo "$password" >/etc/SSHPlus/senha/$username
-    echo "$username $sshlimiter" >>/root/usuarios.db
-    [[ -e /etc/openvpn/server.conf ]] && {
-        echo -ne "\033[1;32mGerar Arquivo Ovpn \033[1;31m? \033[1;33m[s/n]:\033[1;37m "
-        read resp
+    [span_274](start_span)final=$(date "+%Y-%m-%d" -d "+$dias days")[span_274](end_span)
+    [span_275](start_span)gui=$(date "+%d/%m/%Y" -d "+$dias days")[span_275](end_span)
+    [span_276](start_span)pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)[span_276](end_span)
+    [span_277](start_span)useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &[span_277](end_span)
+    [span_278](start_span)echo "$password" >/etc/SSHPlus/senha/$username[span_278](end_span)
+    [span_279](start_span)echo "$username $sshlimiter" >>/root/usuarios.db[span_279](end_span)
+    
+    # === REGISTRO CHECKUSER (USUARIO NORMAL) ===
+    local archivo="/root/checkuser.txt"
+    local linea="${username}:${final}"
+
+    # Crear o agregar
+    if [[ -f "$archivo" ]]; then
+        echo "$linea" >> "$archivo"
+    else
+        echo "$linea" > "$archivo"
+    fi
+    # ============================================
+
+    [[ -e /etc/openvpn/server.conf 
+[span_280](start_span) ]] && {
+        echo -ne "\033[1;32mGerar Arquivo Ovpn \033[1;31m?
+[span_280](end_span) \033[1;33m[s/n]:\033[1;37m "
+        [span_281](start_span)read resp[span_281](end_span)
         [[ "$resp" = @(s|S) ]] && {
-            rm $username.zip $username.ovpn >/dev/null 2>&1
-            echo -ne "\033[1;32mGerar Com usuário e Senha \033[1;31m? \033[1;33m[s/n]:\033[1;37m "
-            read respost
-            echo -ne "\033[1;32mHost Atual\033[1;37m: \033[1;31m(\033[1;37m$Host\033[1;31m) \033[1;37m- \033[1;32mAlterar \033[1;31m? \033[1;33m[s/n]:\033[1;37m "
-            read oprc
+            [span_282](start_span)rm $username.zip $username.ovpn >/dev/null 2>&1[span_282](end_span)
+            echo -ne "\033[1;32mGerar Com usuário e Senha \033[1;31m?
+[span_283](start_span) \033[1;33m[s/n]:\033[1;37m "
+            read respost[span_283](end_span)
+            echo -ne "\033[1;32mHost Atual\033[1;37m: \033[1;31m(\033[1;37m$Host\033[1;31m) \033[1;37m- \033[1;32mAlterar \033[1;31m?
+[span_284](start_span) \033[1;33m[s/n]:\033[1;37m "
+            read oprc[span_284](end_span)
             [[ "$oprc" = @(s|S) ]] && {
-                fun_edithost
+                [span_285](start_span)fun_edithost[span_285](end_span)
             } || {
-                fun_geraovpn
+                [span_286](start_span)fun_geraovpn[span_286](end_span)
             }
-            gerarovpn() {
+          
+[span_287](start_span)   gerarovpn() {
                 [[ ! -e "/root/$username.zip" ]] && {
-                    zip /root/$username.zip /root/$username.ovpn
-                    sleep 1.5
+                    zip /root/$username.zip /root/$username.ovpn[span_287](end_span)
+                    [span_288](start_span)sleep 1.5[span_288](end_span)
                 }
             }
-            clear
-            echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
-            echo -e "\n\033[1;32mIP: \033[1;37m$IP"
-            echo -e "\033[1;32mUsuário: \033[1;37m$username"
-            echo -e "\033[1;32mSenha: \033[1;37m$password"
-            echo -e "\033[1;32mExpira em: \033[1;37m$gui"
-            echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
-            sleep 1
-            function aguarde() {
+    
+[span_289](start_span)         clear
+            echo -e "\E[44;1;37m       CONTA SSH CRIADA !
+[span_289](end_span) \E[0m"
+            [span_290](start_span)echo -e "\n\033[1;32mIP: \033[1;37m$IP"[span_290](end_span)
+            [span_291](start_span)echo -e "\033[1;32mUsuário: \033[1;37m$username"[span_291](end_span)
+            [span_292](start_span)echo -e "\033[1;32mSenha: \033[1;37m$password"[span_292](end_span)
+            [span_293](start_span)echo -e "\033[1;32mExpira em: \033[1;37m$gui"[span_293](end_span)
+            [span_294](start_span)echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"[span_294](end_span)
+            [span_295](start_span)sleep 1[span_295](end_span)
+         
+[span_296](start_span)    function aguarde() {
                 helice() {
-                    gerarovpn >/dev/null 2>&1 &
-                    tput civis
+                    gerarovpn >/dev/null 2>&1 &[span_296](end_span)
+                    [span_297](start_span)tput civis[span_297](end_span)
                     while [ -d /proc/$! ]; do
-                        for i in / - \\ \|; do
-                            sleep .1
+         
+[span_298](start_span)                for i in / - \\ \|; do
+                            sleep .1[span_298](end_span)
                             echo -ne "\e[1D$i"
-                        done
+                   
+[span_299](start_span)      done
                     done
-                    tput cnorm
+                    tput cnorm[span_299](end_span)
                 }
-                echo ""
-                echo -ne "\033[1;31mCRIANDO OVPN\033[1;33m.\033[1;31m. \033[1;32m"
-                helice
-                echo -e "\e[1DOK"
+                [span_300](start_span)echo ""[span_300](end_span)
+                echo -ne "\033[1;31mCRIANDO OVPN\033[1;33m.\033[1;31m.
+[span_301](start_span) \033[1;32m"
+                helice[span_301](end_span)
+                [span_302](start_span)echo -e "\e[1DOK"[span_302](end_span)
             }
-            aguarde
-            VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
-            echo ""
-            [[ -d /var/www/html/openvpn ]] && {
-                mv $HOME/$username.zip /var/www/html/openvpn/$username.zip >/dev/null 2>&1
+            [span_303](start_span)aguarde[span_303](end_span)
+            [span_304](start_span)VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")[span_304](end_span)
+            [span_305](start_span)echo ""[span_305](end_span)
+            [[ 
+[span_306](start_span) -d /var/www/html/openvpn ]] && {
+                mv $HOME/$username.zip /var/www/html/openvpn/$username.zip >/dev/null 2>&1[span_306](end_span)
                 [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]] && {
-                    echo -e "\033[1;32mLINK\033[1;37m: \033[1;36m$IP:81/html/openvpn/$username.zip"
+                    [span_307](start_span)echo -e "\033[1;32mLINK\033[1;37m: \033[1;36m$IP:81/html/openvpn/$username.zip"[span_307](end_span)
                 } || {
-                    echo -e "\033[1;32mLINK\033[1;37m: \033[1;36m$IP:81/openvpn/$username.zip"
+             
+[span_308](start_span)        echo -e "\033[1;32mLINK\033[1;37m: \033[1;36m$IP:81/openvpn/$username.zip"
                 }
             } || {
-                echo -e "\033[1;32mDisponivel em\033[1;31m" ~/"$username.zip\033[0m"
-                sleep 1
+                echo -e "\033[1;32mDisponivel em\033[1;31m" ~/"$username.zip\033[0m"[span_308](end_span)
+                [span_309](start_span)sleep 1[span_309](end_span)
             }
         } || {
-            clear
-            echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
-            echo -e "\n\033[1;32mIP: \033[1;37m$IP"
-            echo -e "\033[1;32mUsuário: \033[1;37m$username"
-            echo -e "\033[1;32mSenha: \033[1;37m$password"
-            echo -e "\033[1;32mExpira em: \033[1;37m$gui"
-            echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
+ 
+[span_310](start_span)            clear
+            echo -e "\E[44;1;37m       CONTA SSH CRIADA !
+[span_310](end_span) \E[0m"
+            [span_311](start_span)echo -e "\n\033[1;32mIP: \033[1;37m$IP"[span_311](end_span)
+            [span_312](start_span)echo -e "\033[1;32mUsuário: \033[1;37m$username"[span_312](end_span)
+            [span_313](start_span)echo -e "\033[1;32mSenha: \033[1;37m$password"[span_313](end_span)
+            [span_314](start_span)echo -e "\033[1;32mExpira em: \033[1;37m$gui"[span_314](end_span)
+            [span_315](start_span)echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"[span_315](end_span)
         }
     } || {
-        clear
-        echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
-        echo -e "\n\033[1;32mIP: \033[1;37m$IP"
-        echo -e "\033[1;32mUsuário: \033[1;37m$username"
-        echo -e "\033[1;32mSenha: \033[1;37m$password"
-        echo -e "\033[1;32mExpira em: \033[1;37m$gui"
-        echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
+        
+[span_316](start_span) clear
+        echo -e "\E[44;1;37m       CONTA SSH CRIADA !
+[span_316](end_span) \E[0m"
+        [span_317](start_span)echo -e "\n\033[1;32mIP: \033[1;37m$IP"[span_317](end_span)
+        [span_318](start_span)echo -e "\033[1;32mUsuário: \033[1;37m$username"[span_318](end_span)
+        [span_319](start_span)echo -e "\033[1;32mSenha: \033[1;37m$password"[span_319](end_span)
+        [span_320](start_span)echo -e "\033[1;32mExpira em: \033[1;37m$gui"[span_320](end_span)
+        [span_321](start_span)echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"[span_321](end_span)
     }
 
 fi
+
