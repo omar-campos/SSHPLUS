@@ -134,6 +134,27 @@ pip install speedtest-cli
 fun_bar 'inst_pct'
 [[ -f "/usr/sbin/ufw" ]] && ufw allow 443/tcp ; ufw allow 80/tcp ; ufw allow 3128/tcp ; ufw allow 8799/tcp ; ufw allow 8080/tcp
 clear
+# =================================================================
+# BLOQUE DE DESCARGA Y CONFIGURACIÓN DE CHECKUSER
+# =================================================================
+echo ""
+echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mCONFIGURANDO CHECKUSER \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
+echo ""
+echo -e "\033[1;33mDescargando archivos de Python para monitorización de usuarios... \033[0m"
+
+# Descarga el menú de Python (checkus.py) y lo guarda en /root/
+wget -O /root/checkus.py https://raw.githubusercontent.com/omar-campos/SSHPLUS/main/checkus.py > /dev/null 2>&1
+
+# Descarga el script principal de monitorización (checkuser.py) y lo guarda en /root/
+wget -O /root/checkuser.py https://raw.githubusercontent.com/omar-campos/SSHPLUS/main/checkuser.py > /dev/null 2>&1
+
+# Concede permisos de ejecución a ambos scripts
+chmod +x /root/checkus.py
+chmod +x /root/checkuser.py
+
+echo -e "\033[1;32mArchivos de CheckUser instalados en /root/.\033[0m"
+# =================================================================
+
 echo ""
 echo -e "              \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mFINALIZANDO \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
 echo ""
