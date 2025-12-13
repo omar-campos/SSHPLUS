@@ -3,62 +3,91 @@ import os
 import subprocess
 import time
 
-# Colores
-bl='\033[38;5;231m'
-am='\033[38;5;228m'
-az='\033[38;5;14m'
-morado='\033[38;5;147m'
-moL='\033[38;5;54m'
-ro='\033[0;31m'
-ve='\033[38;5;148m'
-veR='\033[38;5;40m'
-ye='\033[0;33m'
-ros='\033[38;5;213m'
-me='\033[38;5;208m'
-gu='\033[38;5;161m'
-azi="\033[38;5;18m"
-ci='\033[0m'
+# --- COLORES BASADOS EN TU SCRIPT MENU.SH (ANSI Codes) ---
+R='\033[1;31m'  # Rojo (Para las líneas de borde)
+G='\033[1;32m'  # Verde
+Y='\033[1;33m'  # Amarillo
+B='\033[1;36m'  # Cyan/Azul Claro
+W='\033[1;37m'  # Blanco
+C='\033[0m'     # Reset
+
+# --- CÓDIGO DE FORMATO PARA EL TÍTULO ---
+# Definición explícita para evitar errores de \E
+FUNDO_ROJO_TEXTO_BRANCO = '\033[41;1;37m' 
 
 PYTHON_SCRIPT = "/root/checkuser.py"
 
+# --- FUNCIONES DE CONTROL ---
 
 def start_server():
-    print("Iniciando checkuser...")
+    print(f"{G}Iniciando checkuser...{C}")
+    # Uso compatible con Python 3.6
+    subprocess.run(["screen", "-S", "checkuser", "-X", "quit"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     subprocess.run(["screen", "-dmS", "checkuser", "python3", PYTHON_SCRIPT])
-    print("checkuser iniciado en sesión 'checkuser'.")
-
+    print(f"{G}CheckUser iniciado en sesión 'checkuser'.{C}")
 
 def stop_server():
-    print("Deteniendo checkuser...")
+    print(f"{G}Deteniendo checkuser...{C}")
     subprocess.run(["screen", "-S", "checkuser", "-X", "quit"])
-    print("CheckUser detenido.")
-
+    print(f"{R}CheckUser detenido.{C}")
 
 def status_server():
-    result = subprocess.run(["screen", "-list"], capture_output=True, text=True)
+    # Compatibilidad con Python 3.6
+    result = subprocess.run(["screen", "-list"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if "checkuser" in result.stdout:
-        print("CheckUser está corriendo.")
+        print(f"{G}CheckUser está corriendo (Activo).{C}")
     else:
-        print("CheckUser está detenido.")
-
+        print(f"{R}CheckUser está detenido (Inactivo).{C}")
 
 def enter_screen():
+    print(f"{B}Entrando a la sesión 'checkuser'. Presiona CTRL+A, luego D para salir de la sesión.{C}")
     os.system("screen -r checkuser")
 
+def print_menu():
+    os.system("clear")
+    
+    # --- Lógica de Alineación y Colores del Título ---
+    TITULO_CENTRAL = "⇱ MENU CHECKUSER SHUMELO ⇲"
+    LINEA_BORDE = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    ANCHO_TOTAL = len(LINEA_BORDE) # 50 caracteres
+
+    print(f"{R}{LINEA_BORDE}{C}")
+
+    # AQUI ESTÁ LA CORRECCIÓN CLAVE: Uso de FUNDO_ROJO_TEXTO_BRANCO
+    TITULO_FORMATEADO = f"{FUNDO_ROJO_TEXTO_BRANCO}{TITULO_CENTRAL:^{ANCHO_TOTAL}}{C}"
+    print(f"{R}{TITULO_FORMATEADO}{C}") 
+
+    print(f"{R}{LINEA_BORDE}{C}")
+    # ----------------------------------------
+
+    # Compatibilidad con Python 3.6 para chequear el estado del servicio
+    status_result = subprocess.run(["screen", "-list"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    is_running = "checkuser" in status_result.stdout
+
+    status_indicator = f"{G}◉{C}" if is_running else f"{R}○{C}"
+    
+    # Opciones
+    print(f"{R}[\033[1;36m1\033[1;31m] {W}• {Y}Iniciar checkuser{C}")
+    print(f"{R}[\033[1;36m2\033[1;31m] {W}• {Y}Detener checkuser{C}")
+    print(f"{R}[\033[1;36m3\033[1;31m] {W}• {Y}Estado del checkuser {status_indicator}{C}")
+    print(f"{R}[\033[1;36m4\033[1;31m] {W}• {Y}Entrar a la sesión screen{C}")
+    
+    # Opción de salir
+    print(f"{R}[\033[1;36m0\033[1;31m] {W}• {Y}SAIR {R}>\033[1;33m>\033[1;32m>{C}")
+    
+    print(f"{R}{LINEA_BORDE}{C}")
+    print("")
+
+def exit_menu():
+    print(f"{R}Saindo...{C}")
+    time.sleep(1)
+    
+# --- BUCLE PRINCIPAL ---
 
 while True:
-    os.system("clear")
-    print(f"{veR}===== MENU CHECKUSER SERVER ====={ci}")
-
-    print(f"{ros}1{ci}) {az}Iniciar checkuser{ci}")
-    print(f"{ros}2{ci}) {az}Detener checkuser{ci}")
-    print(f"{ros}3{ci}) {az}Estado del checkuser{ci}")
-    print(f"{ros}4{ci}) {az}Entrar a la sesión screen{ci}")
-    print(f"{ros}5{ci}) {ro}Salir{ci}")
+    print_menu()
     
-    print(f"{veR}============================={ci}")
-
-    opcion = input("Seleccione una opción: ")
+    opcion = input(f"{G}OQUE DESEJA FAZER {Y}??{W} : {C}")
 
     if opcion == "1":
         start_server()
@@ -68,10 +97,12 @@ while True:
         status_server()
     elif opcion == "4":
         enter_screen()
-    elif opcion == "5":
+    elif opcion == "0" or opcion == "5":
+        exit_menu()
         break
     else:
-        print("Opción inválida")
-        time.sleep(2)
+        print(f"{R}\nOpcao invalida !{C}")
+        time.sleep(1)
 
-    input("Presione Enter para continuar...")
+    if opcion != "0" and opcion != "5":
+        input(f"{R}ENTER {Y}para retornar ao {G}MENU!{C}")
