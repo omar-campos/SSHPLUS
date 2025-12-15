@@ -118,7 +118,7 @@ echo "crz: $(date)" > /usr/share/.plus/.plus
 
 # === CORRECCIÓN AQUÍ: Crear el directorio antes del archivo ===
 mkdir -p /etc/rec > /dev/null 2>&1
-echo -e 'by: SHUMELO' >/etc/rec/licence
+echo -e 'by: @omar-campos' >/etc/rec/licence
 }
 fun_bar 'fun_attlist'
 clear
